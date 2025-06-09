@@ -5,18 +5,18 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.app.trackdosekotlin.main.MasterNavigation
 import com.app.trackdosekotlin.onboarding.ui.screens.SplashScreen
 import com.app.trackdosekotlin.onboarding.ui.viewmodel.OnboardViewModel
-import com.app.trackdosekotlin.tabs.health.ui.navigation.HealthNavGraph
 
 sealed class OnboardScreens(val route: String) {
     object SplashScreen : OnboardScreens("splash")
-    object HealthMainScreen : OnboardScreens("health_main")
+    object MasterNav : OnboardScreens("master_nav")
 }
 
 @Composable
-fun OnboardNavGraph(){
-    val onboardViewModel : OnboardViewModel = viewModel()
+fun OnboardNavGraph() {
+    val onboardViewModel: OnboardViewModel = viewModel()
     val navController = rememberNavController()
 
     NavHost(
@@ -27,14 +27,14 @@ fun OnboardNavGraph(){
             SplashScreen(
                 viewModel = onboardViewModel,
                 onFinished = {
-                    navController.navigate(OnboardScreens.HealthMainScreen.route) {
+                    navController.navigate(OnboardScreens.MasterNav.route) {
                         popUpTo(0)
                     }
                 }
             )
         }
-        composable(route = OnboardScreens.HealthMainScreen.route) {
-            HealthNavGraph()
+        composable(route = OnboardScreens.MasterNav.route) {
+            MasterNavigation()
         }
     }
 }

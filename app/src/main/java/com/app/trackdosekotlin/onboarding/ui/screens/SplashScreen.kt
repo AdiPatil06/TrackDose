@@ -36,9 +36,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewModelScope
 import com.app.trackdosekotlin.R
+import com.app.trackdosekotlin.main.app
 import com.app.trackdosekotlin.onboarding.ui.viewmodel.OnboardViewModel
+import com.app.trackdosekotlin.shared.TDDataStore
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 
 data class SplashData(
@@ -77,10 +81,13 @@ fun SplashScreen(viewModel: OnboardViewModel, onFinished: () -> Unit) {
             targetValue = 1f,
             animationSpec = tween(durationMillis = 3000)
         )
-        if (currentScreen < screens.lastIndex) {
+        if (currentScreen < screens.lastIndex && !viewModel.isSplashScreenDone.value) {
             currentScreen++
         } else {
-            onFinished()
+            viewModel.viewModelScope.launch {
+                app.preferenceDataStore.setDataBoolean(TDDataStore.splashScreen, true)
+                onFinished()
+            }
         }
     }
 
@@ -152,10 +159,16 @@ fun SplashScreen(viewModel: OnboardViewModel, onFinished: () -> Unit) {
                 FloatingActionButton(
                     shape = CircleShape,
                     onClick = {
-                        if (currentScreen < screens.lastIndex) {
+                        if (currentScreen < screens.lastIndex && !viewModel.isSplashScreenDone.value) {
                             currentScreen++
                         } else {
-                            onFinished()
+                            viewModel.viewModelScope.launch {
+                                app.preferenceDataStore.setDataBoolean(
+                                    TDDataStore.splashScreen,
+                                    true
+                                )
+                                onFinished()
+                            }
                         }
                     }
                 ) {
