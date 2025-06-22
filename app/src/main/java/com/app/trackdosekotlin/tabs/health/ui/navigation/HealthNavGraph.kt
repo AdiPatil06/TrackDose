@@ -1,5 +1,6 @@
 package com.app.trackdosekotlin.tabs.health.ui.navigation
 
+import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
@@ -16,6 +17,7 @@ sealed class HealthNavScreens(val route: String) {
 fun HealthNavGraph() {
     val healthViewModel: HealthViewModel = viewModel()
     val navController = rememberNavController()
+    Log.i("Testing", "HealthNavGraph: Testing")
 
     NavHost(
         navController = navController,
